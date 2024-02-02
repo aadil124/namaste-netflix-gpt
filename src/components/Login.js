@@ -1,16 +1,48 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import {
+  checkValidDataForSignIn,
+  checkValidDataForSignUp,
+} from "../utils/validate";
 
 const Login = () => {
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [showToggleSignIn, setShowToggleSignIn] = useState(true);
+  const [showErrorMessage, setShowErrorMessage] = useState(null);
+
+  const userName = useRef(null);
+  const userEmail = useRef(null);
+  const userPassword = useRef(null);
+
   const handleToggleSignIn = () => {
     setShowToggleSignIn(!showToggleSignIn);
   };
   const handleLearnMore = () => {
     setShowLearnMore(!showLearnMore);
   };
+
+  const handleButtonClick = () => {
+    // console.log(userEmail);
+    // console.log(userPassword);
+
+    //first validate form data i.e. name ,email ID , password
+    const errMessage = showToggleSignIn
+      ? checkValidDataForSignIn(
+          userEmail.current.value,
+          userPassword.current.value
+        )
+      : checkValidDataForSignUp(
+          userName.current.value,
+          userEmail.current.value,
+          userPassword.current.value
+        );
+    setShowErrorMessage(errMessage);
+    console.log(errMessage);
+
+    //SignIn or Sign Up
+  };
+
   return (
     <>
       {/* Header  */}
@@ -24,31 +56,45 @@ const Login = () => {
       </div>
       {/* Form for SignIn and Signup */}
       <div>
-        <form className="absolute w-3/12 bg-black my-36 mx-auto right-0 left-0 p-5 text-white rounded-lg">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="absolute w-3/12 bg-black my-36 mx-auto right-0 left-0 p-5 text-white rounded-lg"
+        >
           <div className="mr-6 ml-4">
             <h1 className="p-2 text-3xl font-bold">
               {showToggleSignIn ? "Sign In" : "Sign Up"}
             </h1>
             {!showToggleSignIn && (
-              <input
-                type="text"
-                placeholder="Enter Full Name"
-                className="m-2 p-3 w-full rounded-md bg-gray-700"
-              />
+              <>
+                <input
+                  ref={userName}
+                  type="text"
+                  placeholder="Enter Full Name"
+                  className="m-2 p-3 w-full rounded-md bg-gray-700"
+                />
+              </>
             )}
 
             <input
+              ref={userEmail}
               type="text"
               placeholder="Enter Email"
               className="m-2 p-3 w-full rounded-md bg-gray-700"
             />
             <input
+              ref={userPassword}
               type="password"
               placeholder="Enter Password"
               className="m-2 p-3 w-full rounded-md  bg-gray-700"
             />
+            <p className="text-md font-semibold text-red-500 mx-2">
+              {showErrorMessage}
+            </p>
             <div>
-              <button className="bg-red-500 m-2  py-3 px-4 rounded-md w-full text-md font-bold">
+              <button
+                className="bg-red-500 m-2  py-3 px-4 rounded-md w-full text-md font-bold"
+                onClick={handleButtonClick}
+              >
                 {showToggleSignIn ? "Sign In" : "Sign Up"}
               </button>
             </div>
