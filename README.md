@@ -1,10 +1,16 @@
 # NetflixGPT 
 
 -Create React App
--configured Tailwind
+-configured TailwindCSS
 -Header
--Sign In page 
--Sign Up Page
+-Routing
+-Sign In Form 
+-Sign Up Form
+-Form Validation
+-UseRef Hook
+-FireBase Setup
+-Deploying our app to production
+-Create Sign Up User Account
 
 
 # Features
