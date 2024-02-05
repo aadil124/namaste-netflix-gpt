@@ -58,7 +58,7 @@ const Login = () => {
       <div>
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="absolute w-3/12 bg-black my-36 mx-auto right-0 left-0 p-5 text-white rounded-lg"
+          className="absolute w-3/12 bg-black opacity-85 my-36 mx-auto right-0 left-0 p-5 text-white rounded-lg"
         >
           <div className="mr-6 ml-4">
             <h1 className="p-2 text-3xl font-bold">
