@@ -26,7 +26,7 @@ const Login = () => {
     // console.log(userEmail);
     // console.log(userPassword);
 
-    //first validate form data i.e. name ,email ID , password
+    //firstly validate form data i.e. name ,email ID , password
     const errMessage = showToggleSignIn
       ? checkValidDataForSignIn(
           userEmail.current.value,
@@ -40,7 +40,7 @@ const Login = () => {
     setShowErrorMessage(errMessage);
     console.log(errMessage);
 
-    //SignIn or Sign Up
+    //secondly we have to do SignIn or Sign Up
   };
 
   return (

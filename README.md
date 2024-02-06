@@ -10,7 +10,7 @@
 -UseRef Hook
 -FireBase Setup
 -Deploying our app to production
--Create Sign Up User Account
+-Create Sign Up User Account 
 
 
 # Features
