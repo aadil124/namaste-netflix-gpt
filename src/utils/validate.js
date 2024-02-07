@@ -19,7 +19,7 @@ export const checkValidDataForSignUp = (userName, userEmail, userPassword) => {
   const isPasswordValid =
     /^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(userPassword);
 
-  if (!isNameValid) return "First letter must be capital !";
+  if (!isNameValid) return "Name's First letter must be capital !";
   if (!isEmailValid) return "Email ID  is not valid";
   if (!isPasswordValid) return "Password is not valid";
 
