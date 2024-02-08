@@ -1,14 +1,24 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   checkValidDataForSignIn,
   checkValidDataForSignUp,
 } from "../utils/validate";
 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useDispatch } from "react-redux";
+import { addUser } from "../Redux/userSlice";
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showLearnMore, setShowLearnMore] = useState(false);
-  const [showToggleSignIn, setShowToggleSignIn] = useState(true);
+  const [showToggleSignInForm, setShowToggleSignInForm] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(null);
 
   const userName = useRef(null);
@@ -16,7 +26,7 @@ const Login = () => {
   const userPassword = useRef(null);
 
   const handleToggleSignIn = () => {
-    setShowToggleSignIn(!showToggleSignIn);
+    setShowToggleSignInForm(!showToggleSignInForm);
   };
   const handleLearnMore = () => {
     setShowLearnMore(!showLearnMore);
@@ -27,7 +37,7 @@ const Login = () => {
     // console.log(userPassword);
 
     //firstly validate form data i.e. name ,email ID , password
-    const errMessage = showToggleSignIn
+    const errMessage = showToggleSignInForm
       ? checkValidDataForSignIn(
           userEmail.current.value,
           userPassword.current.value
@@ -41,6 +51,54 @@ const Login = () => {
     console.log(errMessage);
 
     //secondly we have to do SignIn or Sign Up
+
+    if (errMessage) return; // if message is null go ahead otherwise don't
+
+    if (!showToggleSignInForm) {
+      // user has to sign up
+
+      createUserWithEmailAndPassword(
+        auth,
+        userEmail.current.value,
+        userPassword.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log("user data", user);
+          setShowToggleSignInForm(!showToggleSignInForm);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          setShowErrorMessage(`${errorCode} --- ${errorMessage}`);
+          console.log(`${errorCode} --- ${errorMessage}`);
+        });
+    } else {
+      // user has to sign in
+
+      signInWithEmailAndPassword(
+        auth,
+        userEmail.current.value,
+        userPassword.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("user data", user);
+          dispatch(addUser(user));
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setShowErrorMessage(`${errorCode} --- ${errorMessage}`);
+          console.log(`${errorCode} --- ${errorMessage}`);
+        });
+    }
   };
 
   return (
@@ -62,9 +120,9 @@ const Login = () => {
         >
           <div className="mr-6 ml-4">
             <h1 className="p-2 text-3xl font-bold">
-              {showToggleSignIn ? "Sign In" : "Sign Up"}
+              {showToggleSignInForm ? "Sign In" : "Sign Up"}
             </h1>
-            {!showToggleSignIn && (
+            {!showToggleSignInForm && (
               <>
                 <input
                   ref={userName}
@@ -95,7 +153,7 @@ const Login = () => {
                 className="bg-red-500 m-2  py-3 px-4 rounded-md w-full text-md font-bold"
                 onClick={handleButtonClick}
               >
-                {showToggleSignIn ? "Sign In" : "Sign Up"}
+                {showToggleSignInForm ? "Sign In" : "Sign Up"}
               </button>
             </div>
           </div>
@@ -107,14 +165,16 @@ const Login = () => {
           <div className="ml-4 p-2 ">
             <p className="mb-3">
               <span className=" text-gray-400">
-                {showToggleSignIn ? "New to Netflix?" : "Already Registered?"}
+                {showToggleSignInForm
+                  ? "New to Netflix?"
+                  : "Already Registered?"}
               </span>
 
               <span
                 className="font-bold cursor-pointer p-2"
                 onClick={handleToggleSignIn}
               >
-                {showToggleSignIn ? "Sign up now." : "Sign In"}
+                {showToggleSignInForm ? "Sign up now." : "Sign In"}
               </span>
             </p>
             <p className="text-sm text-gray-400">
@@ -138,7 +198,7 @@ const Login = () => {
                   onClick={handleLearnMore}
                   className="cursor-pointer font-semibold text-blue-500"
                 >
-                  Show less...
+                  ...Show less
                 </span>
               </p>
             )}
