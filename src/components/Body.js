@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./Login";
 import Browse from "./Browse";
 import ForgotPassword from "./ForgotPassword";
+import ErrorPage from "./ErrorPage";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -18,6 +19,12 @@ const Body = () => {
       path: "/forgotpassword",
       element: <ForgotPassword />,
     },
+    {
+      path: "/error",
+      element: <ErrorPage />,
+    },
+
+    useEffect(() => {}, []),
   ]);
   return (
     <div>
