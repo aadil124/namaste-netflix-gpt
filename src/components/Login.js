@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   checkValidDataForSignIn,
   checkValidDataForSignUp,
@@ -9,6 +9,7 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
@@ -66,7 +67,33 @@ const Login = () => {
           // Signed up
           const user = userCredential.user;
           console.log("user data", user);
-          setShowToggleSignInForm(!showToggleSignInForm);
+
+          updateProfile(user, {
+            displayName: userName.current.value,
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              // Profile updated!
+              // ...
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              console.log(uid, email, displayName);
+
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse")
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+              setShowErrorMessage(error.message);
+            });
+
           // ...
         })
         .catch((error) => {
@@ -88,7 +115,7 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log("user data", user);
-          dispatch(addUser(user));
+          // dispatch(addUser({}));
           navigate("/browse");
           // ...
         })
