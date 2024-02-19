@@ -70,14 +70,16 @@ const Login = () => {
 
           updateProfile(user, {
             displayName: userName.current.value,
-            photoURL: "https://example.com/jane-q-user/profile.jpg",
+            photoURL:
+              "https://avatars.githubusercontent.com/u/98684212?s=400&u=9dd5a5b8c0427c6be89074aa6f68679649119755&v=4",
           })
             .then(() => {
               // Profile updated!
               // ...
               const { uid, email, displayName, photoURL } = auth.currentUser;
-              console.log(uid, email, displayName);
+              console.log(uid, email, displayName, photoURL);
 
+              // so here we are updating the store also
               dispatch(
                 addUser({
                   uid: uid,
@@ -86,7 +88,8 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-              navigate("/browse")
+
+              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -114,7 +117,7 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("user data", user);
+          // console.log("user data", user);
           // dispatch(addUser({}));
           navigate("/browse");
           // ...
@@ -122,7 +125,8 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setShowErrorMessage(`${errorCode} --- ${errorMessage}`);
+
+          setShowErrorMessage(`Email / Password Not Valid!!!`);
           console.log(`${errorCode} --- ${errorMessage}`);
         });
     }
