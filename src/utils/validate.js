@@ -3,8 +3,7 @@ export const checkValidDataForSignIn = (userEmail, userPassword) => {
   const isEmailValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
     userEmail
   );
-  const isPasswordValid =
-    /^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(userPassword);
+  const isPasswordValid = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(userPassword);
   if (!isEmailValid) return "Email ID  is not valid";
   if (!isPasswordValid) return "Password is not valid";
 
@@ -16,8 +15,7 @@ export const checkValidDataForSignUp = (userName, userEmail, userPassword) => {
   const isEmailValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
     userEmail
   );
-  const isPasswordValid =
-    /^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(userPassword);
+  const isPasswordValid = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(userPassword);
 
   if (!isNameValid) return "Name's First letter must be capital !";
   if (!isEmailValid) return "Email ID  is not valid";
