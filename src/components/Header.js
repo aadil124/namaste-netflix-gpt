@@ -29,14 +29,17 @@ const Header = () => {
         alt="logo"
       />
       {user && (
-        <div className="m-2 p-4 flex">
-          <img
-            className="mt-4"
-            src="https://github.com/account"
-            alt="userIcon"
-          />
+        <div className="m-2 p-3 flex">
+          <div className="px-2">
+            <img
+              className="mt-4 w-8 rounded-full"
+              src={user.photoURL}
+              alt="userIcon"
+            />
+            <h1 className="text-red-600 font-bold">{user.displayName}</h1>
+          </div>
           <button
-            className="bg-red-600 rounded-md px-2 text-white font-bold "
+            className="bg-red-600 rounded-md px-2 h-10 mt-5 text-white font-bold"
             onClick={handleSignOut}
           >
             Sign out
