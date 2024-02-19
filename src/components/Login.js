@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   checkValidDataForSignIn,
   checkValidDataForSignUp,
@@ -17,7 +17,6 @@ import { addUser } from "../Redux/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [showToggleSignInForm, setShowToggleSignInForm] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(null);
@@ -88,8 +87,6 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -116,10 +113,9 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
+          // const user = userCredential.user;
           // console.log("user data", user);
           // dispatch(addUser({}));
-          navigate("/browse");
           // ...
         })
         .catch((error) => {
