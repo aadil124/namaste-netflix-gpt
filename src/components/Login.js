@@ -123,7 +123,7 @@ const Login = () => {
           const errorMessage = error.message;
 
           setShowErrorMessage(`Email / Password Not Valid!!!`);
-          console.log(`${errorCode} --- ${errorMessage}`);
+          // console.log(`${errorCode} --- ${errorMessage}`);
         });
     }
   };
