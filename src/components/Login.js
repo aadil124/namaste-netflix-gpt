@@ -119,8 +119,8 @@ const Login = () => {
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+          // const errorCode = error.code;
+          // const errorMessage = error.message;
 
           setShowErrorMessage(`Email / Password Not Valid!!!`);
           // console.log(`${errorCode} --- ${errorMessage}`);
