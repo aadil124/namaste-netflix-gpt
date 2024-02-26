@@ -19,10 +19,10 @@ const Body = () => {
       path: "/forgotpassword",
       element: <ForgotPassword />,
     },
-    {
-      path: "/error",
-      element: <ErrorPage />,
-    },
+    // {
+    //   path: "/error",
+    //   element: <ErrorPage />,
+    // },
   ]);
 
   return (
