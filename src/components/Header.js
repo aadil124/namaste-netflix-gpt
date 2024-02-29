@@ -23,6 +23,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    //in documentation onAuthStateChanged is returning a unsubscribe function
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
