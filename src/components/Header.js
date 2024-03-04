@@ -22,36 +22,36 @@ const Header = () => {
       });
   };
 
-  // useEffect(() => {
-  //   //in documentation onAuthStateChanged is returning a unsubscribe function
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       // User is signed in, see docs for a list of available properties
-  //       // https://firebase.google.com/docs/reference/js/auth.user
+  useEffect(() => {
+    //in documentation onAuthStateChanged is returning a unsubscribe function
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
 
-  //       const { uid, email, displayName, photoURL } = user;
-  //       console.log(uid, email, displayName);
-  //       dispatch(
-  //         addUser({
-  //           uid: uid,
-  //           email: email,
-  //           displayName: displayName,
-  //           photoURL: photoURL,
-  //         })
-  //       );
-  //       navigate("/browse");
-  //       // ...
-  //     } else {
-  //       // User is signed out
-  //       // ...
-  //       dispatch(removeUser());
-  //       navigate("/");
-  //     }
-  //   });
+        const { uid, email, displayName, photoURL } = user;
+        console.log(uid, email, displayName);
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        navigate("/browse");
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
 
-  //   // this will be called when my component unmounts and this will be unsubscribe my onAuthStateChanged.
-  //   return () => unsubscribe();
-  // }, []);
+    // this will be called when my component unmounts and this will be unsubscribe my onAuthStateChanged.
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="absolute bg-gradient-to-b from-black z-50 w-screen flex justify-between">
