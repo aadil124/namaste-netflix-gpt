@@ -14,6 +14,7 @@ import {
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Redux/userSlice";
+import { BACKGROUND_IMAGE, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -69,8 +70,7 @@ const Login = () => {
 
           updateProfile(user, {
             displayName: userName.current.value,
-            photoURL:
-              "https://avatars.githubusercontent.com/u/98684212?s=400&u=9dd5a5b8c0427c6be89074aa6f68679649119755&v=4",
+            photoURL: USER_AVATAR,
           })
             .then(() => {
               // Profile updated!
@@ -134,10 +134,7 @@ const Login = () => {
       <Header />
       {/* Body background_Image  */}
       <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/32c47234-8398-4a4f-a6b5-6803881d38bf/eed3a573-8db7-47ca-a2ce-b511e0350439/IN-en-20240122-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-          alt="background_Image"
-        />
+        <img src={BACKGROUND_IMAGE} alt="background_Image" />
       </div>
       {/* Form for SignIn and Signup */}
       <div>
