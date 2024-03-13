@@ -4,8 +4,6 @@ const ErrorPage = () => {
   return (
     <>
       <div>ErrorPage</div>
-      <div>ErrorPage</div>
-      <div>ErrorPage</div>
     </>
   );
 };
