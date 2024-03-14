@@ -51,6 +51,7 @@ const Header = () => {
     });
 
     // this will be called when my component unmounts and this will be unsubscribe my onAuthStateChanged.
+
     return () => unsubscribe();
   }, []);
 
