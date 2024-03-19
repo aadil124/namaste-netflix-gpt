@@ -72,7 +72,7 @@ const Header = () => {
             className="bg-red-600 rounded-md px-2 h-10 mt-5 text-white font-bold"
             onClick={handleSignOut}
           >
-            Sign out
+            {/* Sign out */}
           </button>
         </div>
       )}
