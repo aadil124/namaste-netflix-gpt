@@ -23,4 +23,8 @@
 
 # Features
 
--
+- Login/Sign Up
+    - Sign In /sign up form
+    - redirected to browse page
+- Browse Page ( After Authentication)
+    - Header

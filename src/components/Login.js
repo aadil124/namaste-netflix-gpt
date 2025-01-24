@@ -128,6 +128,9 @@ const Login = () => {
     }
   };
 
+  const handleChange = () => {
+    setShowErrorMessage("");
+  };
   return (
     <>
       {/* Header  */}
@@ -162,6 +165,7 @@ const Login = () => {
               type="text"
               placeholder="Enter Email"
               className="m-2 p-3 w-full rounded-md bg-gray-700"
+              onChange={handleChange}
             />
             <input
               ref={userPassword}
