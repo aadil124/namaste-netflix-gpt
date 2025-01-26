@@ -17,7 +17,7 @@
 -Implemented updateProfile Api call
 -BugFix : Sign up user displayName and Profile Picture update
 -BugFix : if the user is not logged in Redirect /browse to login Page and vice-versa
--unsubscribing onAuthStateChange
+-unsubscribing onAuthStateChange callback
 -Add hardcoded values to constants file.
 
 
