@@ -3,7 +3,7 @@ import Body from "./components/Body";
 import appStore from "./Redux/appStore";
 
 function App() {
-  console.log(appStore);
+  // console.log(appStore);
   return (
     <div>
       <Provider store={appStore}>
