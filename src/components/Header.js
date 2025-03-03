@@ -26,7 +26,7 @@ const Header = () => {
   useEffect(() => {
     //in documentation onAuthStateChanged is returning a unsubscribe function
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // console.log("user", user);
+      console.log("user", user);
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
