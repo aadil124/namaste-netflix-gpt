@@ -10,7 +10,6 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
-  console.log(user);
 
   const handleSignOut = () => {
     signOut(auth)
@@ -26,13 +25,12 @@ const Header = () => {
   useEffect(() => {
     //in documentation onAuthStateChanged is returning a unsubscribe function
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("user", user);
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
 
         const { uid, email, displayName, photoURL } = user;
-        console.log(uid, email, displayName);
+        // console.log(uid, email, displayName);
         dispatch(
           addUser({
             uid: uid,
