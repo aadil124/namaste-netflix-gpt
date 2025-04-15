@@ -9,7 +9,7 @@ const VideoTitle = ({ movieTitle, movieOverview }) => {
         Play
       </button>
       <button className="mx-3 px-5 py-2 bg-white text-black rounded-md opacity-50 hover:opacity-40">
-        Help
+        Help button
       </button>
     </div>
   );
