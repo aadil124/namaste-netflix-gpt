@@ -7,7 +7,7 @@ import SecondaryContainer from "./SecondaryContainer";
 const Browse = () => {
   useNowPlayingMovies();
 
-  //we can make here one custom hook also
+  // we can make here one custom hook also
   // const dispatch = useDispatch();
   // const getNowPlayingMoviesList = async () => {
   //   const url = "https://api.themoviedb.org/3/movie/now_playing?page=1";
