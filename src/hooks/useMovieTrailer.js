@@ -4,7 +4,7 @@ import { API_OPTIONS } from "../utils/constants";
 import { addMovieTrailer } from "../Redux/moviesSlice";
 
 const useMovieTrailer = (movieId) => {
-  // console.log("movieId", movieId);
+  console.log("movieId", movieId);
 
   const dispatch = useDispatch();
   const getMoviesTrailerVideo = async () => {
