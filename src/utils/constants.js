@@ -16,4 +16,4 @@ export const API_OPTIONS = {
   },
 };
 
-export const IMAGE_URL = "https://image.tmdb.org/t/p/w300";
+// export const IMAGE_URL = "https://image.tmdb.org/t/p/w300";
