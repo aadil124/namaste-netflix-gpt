@@ -7,29 +7,13 @@ import ErrorPage from "./ErrorPage";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
-    {
-      path: "/",
-      element: <Login />,
-    },
-    {
-      path: "/browse",
-      element: <Browse />,
-    },
-    {
-      path: "/forgotpassword",
-      element: <ForgotPassword />,
-    },
-    {
-      path: "/error",
-      element: <ErrorPage />,
-    },
+    { path: "/", element: <Login /> },
+    { path: "/browse", element: <Browse /> },
+    { path: "/forgotpassword", element: <ForgotPassword /> },
+    { path: "/error", element: <ErrorPage /> },
   ]);
 
-  return (
-    <div>
-      <RouterProvider router={appRouter} />
-    </div>
-  );
+  return <RouterProvider router={appRouter} />;
 };
 
 export default Body;

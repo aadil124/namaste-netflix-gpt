@@ -5,21 +5,19 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../Redux/userSlice";
 import { LOGO } from "../utils/constants";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-        navigate("/error");
-      });
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      navigate("/error");
+    }
   };
 
   useEffect(() => {
@@ -40,37 +38,35 @@ const Header = () => {
           })
         );
         navigate("/browse");
-        // ...
       } else {
-        // User is signed out
-        // ...
         dispatch(removeUser());
         navigate("/");
       }
     });
-
-    // this will be called when my component unmounts and this will be unsubscribe my onAuthStateChanged.
-
     return () => unsubscribe();
-  }, []);
+  }, [dispatch, navigate]);
 
   return (
-    <div className="absolute bg-gradient-to-b from-black z-50 w-screen flex justify-between">
-      <img className="w-56" src={LOGO} alt="logo" />
+    <div className="fixed top-0 left-0 bg-gradient-to-b from-black z-50 w-screen flex justify-between items-center px-4 py-2">
+      <img className="w-44 sm:w-52" src={LOGO} alt="logo" />
       {user && (
-        <div className="m-2 p-3 flex">
-          <div className="px-2">
+        <div className="flex items-center gap-3 text-white">
+          <div className="flex flex-col items-center">
             <img
-              className="mt-4 w-8 rounded-full"
+              className="w-9 h-9 rounded-full border border-gray-400"
               src={user.photoURL}
-              alt="userIcon"
+              alt="User Icon"
+              loading="lazy"
             />
-            <h1 className="text-red-600 font-bold">{user.displayName}</h1>
+            <span className="text-xs text-red-500 font-semibold truncate max-w-[100px]">
+              {user.displayName}
+            </span>
           </div>
           <button
-            className="bg-red-600 rounded-md px-2 h-10 mt-5 text-white font-bold"
             onClick={handleSignOut}
+            className="flex items-center gap-1 bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md text-sm font-semibold"
           >
+            <FaSignOutAlt />
             Sign out
           </button>
         </div>

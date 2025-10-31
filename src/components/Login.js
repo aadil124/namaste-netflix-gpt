@@ -5,7 +5,6 @@ import {
   checkValidDataForSignIn,
   checkValidDataForSignUp,
 } from "../utils/validate";
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -18,221 +17,155 @@ import { BACKGROUND_IMAGE, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [showLearnMore, setShowLearnMore] = useState(false);
-  const [showToggleSignInForm, setShowToggleSignInForm] = useState(true);
-  const [showErrorMessage, setShowErrorMessage] = useState(null);
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [learnMore, setLearnMore] = useState(false);
+  const [error, setError] = useState(null);
 
-  const userName = useRef(null);
-  const userEmail = useRef(null);
-  const userPassword = useRef(null);
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const handleToggleSignIn = () => {
-    setShowToggleSignInForm(!showToggleSignInForm);
-  };
-  const handleLearnMore = () => {
-    setShowLearnMore(!showLearnMore);
-  };
+  const toggleSignIn = () => setIsSignIn(!isSignIn);
+  const toggleLearnMore = () => setLearnMore(!learnMore);
 
-  const handleButtonClick = () => {
-    // console.log(userEmail);
-    // console.log(userPassword);
-
-    //firstly validate form data i.e. name ,email ID , password
-    const errMessage = showToggleSignInForm
+  const handleAuth = async () => {
+    const err = isSignIn
       ? checkValidDataForSignIn(
-          userEmail.current.value,
-          userPassword.current.value
+          emailRef.current.value,
+          passwordRef.current.value
         )
       : checkValidDataForSignUp(
-          userName.current.value,
-          userEmail.current.value,
-          userPassword.current.value
+          nameRef.current.value,
+          emailRef.current.value,
+          passwordRef.current.value
         );
-    setShowErrorMessage(errMessage);
-    console.log(errMessage);
 
-    //secondly we have to do SignIn or Sign Up
+    setError(err);
+    if (err) return;
 
-    if (errMessage) return; // if message is null go ahead otherwise don't
-
-    if (!showToggleSignInForm) {
-      // user has to sign up
-
-      createUserWithEmailAndPassword(
-        auth,
-        userEmail.current.value,
-        userPassword.current.value
-      )
-        .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
-          console.log("user data", user);
-
-          updateProfile(user, {
-            displayName: userName.current.value,
-            photoURL: USER_AVATAR,
-          })
-            .then(() => {
-              // Profile updated!
-              // ...
-              const { uid, email, displayName, photoURL } = auth.currentUser;
-              console.log(uid, email, displayName, photoURL);
-
-              // so here we are updating the store also
-              dispatch(
-                addUser({
-                  uid: uid,
-                  email: email,
-                  displayName: displayName,
-                  photoURL: photoURL,
-                })
-              );
-            })
-            .catch((error) => {
-              // An error occurred
-              // ...
-              setShowErrorMessage(error.message);
-            });
-
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // ..
-          setShowErrorMessage(`${errorCode} --- ${errorMessage}`);
-          console.log(`${errorCode} --- ${errorMessage}`);
+    try {
+      if (isSignIn) {
+        await signInWithEmailAndPassword(
+          auth,
+          emailRef.current.value,
+          passwordRef.current.value
+        );
+      } else {
+        const userCred = await createUserWithEmailAndPassword(
+          auth,
+          emailRef.current.value,
+          passwordRef.current.value
+        );
+        await updateProfile(userCred.user, {
+          displayName: nameRef.current.value,
+          photoURL: USER_AVATAR,
         });
-    } else {
-      // user has to sign in
-
-      signInWithEmailAndPassword(
-        auth,
-        userEmail.current.value,
-        userPassword.current.value
-      )
-        .then((userCredential) => {
-          // Signed in
-          // const user = userCredential.user;
-          // console.log("user data", user);
-          // dispatch(addUser({}));
-          // ...
-        })
-        .catch((error) => {
-          // const errorCode = error.code;
-          // const errorMessage = error.message;
-
-          setShowErrorMessage(`Email / Password Not Valid!!!`);
-          // console.log(`${errorCode} --- ${errorMessage}`);
-        });
+        const { uid, email, displayName, photoURL } = auth.currentUser;
+        dispatch(addUser({ uid, email, displayName, photoURL }));
+      }
+    } catch (error) {
+      setError("Email / Password not valid!");
     }
   };
 
-  const handleChange = () => {
-    setShowErrorMessage("");
-  };
   return (
     <>
-      {/* Header  */}
       <Header />
-      {/* Body background_Image  */}
-      <div className="absolute">
-        <img src={BACKGROUND_IMAGE} alt="background_Image" />
+      <div className="absolute inset-0 -z-10">
+        <img
+          src={BACKGROUND_IMAGE}
+          alt="Background"
+          className="min-h-screen w-screen object-cover fixed top-0 left-0 -z-10"
+        />
       </div>
-      {/* Form for SignIn and Signup */}
-      <div>
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="absolute w-3/12 bg-black opacity-85 my-36 mx-auto right-0 left-0 p-5 text-white rounded-lg"
+
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="absolute w-11/12 sm:w-3/12 bg-black bg-opacity-80 my-24 mx-auto right-0 left-0 p-6 text-white rounded-lg shadow-lg"
+      >
+        <h1 className="text-3xl font-bold mb-4 m-2">
+          {isSignIn ? "Sign In" : "Sign Up"}
+        </h1>
+
+        {!isSignIn && (
+          <input
+            ref={nameRef}
+            type="text"
+            placeholder="Enter Full Name"
+            className="m-2 p-3 w-full rounded-md bg-gray-700"
+            onChange={() => setError("")}
+          />
+        )}
+
+        <input
+          ref={emailRef}
+          type="email"
+          placeholder="Enter Email"
+          className="m-2 p-3 w-full rounded-md bg-gray-700"
+          onChange={() => setError("")}
+        />
+        <input
+          ref={passwordRef}
+          type="password"
+          placeholder="Enter Password"
+          className="m-2 p-3 w-full rounded-md bg-gray-700"
+          onChange={() => setError("")}
+        />
+
+        {error && (
+          <p className="text-red-500 text-md font-semibold mx-2">{error}</p>
+        )}
+
+        <button
+          className="bg-red-600 hover:bg-red-700 transition m-2 py-3 px-4 rounded-md w-full text-md font-bold"
+          onClick={handleAuth}
         >
-          <div className="mr-6 ml-4">
-            <h1 className="p-2 text-3xl font-bold">
-              {showToggleSignInForm ? "Sign In" : "Sign Up"}
-            </h1>
-            {!showToggleSignInForm && (
-              <>
-                <input
-                  ref={userName}
-                  type="text"
-                  placeholder="Enter Full Name"
-                  className="m-2 p-3 w-full rounded-md bg-gray-700"
-                />
-              </>
-            )}
+          {isSignIn ? "Sign In" : "Sign Up"}
+        </button>
 
-            <input
-              ref={userEmail}
-              type="text"
-              placeholder="Enter Email"
-              className="m-2 p-3 w-full rounded-md bg-gray-700"
-              onChange={handleChange}
-            />
-            <input
-              ref={userPassword}
-              type="password"
-              placeholder="Enter Password"
-              className="m-2 p-3 w-full rounded-md  bg-gray-700"
-            />
-            <p className="text-md font-semibold text-red-500 mx-2">
-              {showErrorMessage}
-            </p>
-            <div>
-              <button
-                className="bg-red-500 m-2  py-3 px-4 rounded-md w-full text-md font-bold"
-                onClick={handleButtonClick}
-              >
-                {showToggleSignInForm ? "Sign In" : "Sign Up"}
-              </button>
-            </div>
-          </div>
-          <div className="text-center p-2">
-            <Link to="/forgotpassword">
-              <h1>Forgot Password?</h1>
-            </Link>
-          </div>
-          <div className="ml-4 p-2 ">
-            <p className="mb-3">
-              <span className=" text-gray-400">
-                {showToggleSignInForm
-                  ? "New to Netflix?"
-                  : "Already Registered?"}
-              </span>
+        <div className="text-center mt-1">
+          <Link to="/forgotpassword" className="text-blue-400 hover:underline">
+            Forgot Password?
+          </Link>
+        </div>
 
-              <span
-                className="font-bold cursor-pointer p-2"
-                onClick={handleToggleSignIn}
-              >
-                {showToggleSignInForm ? "Sign up now." : "Sign In"}
-              </span>
-            </p>
-            <p className="text-sm text-gray-400">
-              This page is protected by Google reCAPTCHA to ensure you're not a
-              bot.
-              <span
-                onClick={handleLearnMore}
-                className="cursor-pointer font-semibold text-blue-500"
-              >
-                Learn more.
-              </span>
-            </p>
-            {showLearnMore && (
-              <p className="text-sm text-gray-400 mt-5">
-                The information collected by Google reCAPTCHA is subject to the
-                Google Privacy Policy and Terms of Service, and is used for
-                providing, maintaining, and improving the reCAPTCHA service and
-                for general security purposes (it is not used for personalized
-                advertising by Google).
-                <span
-                  onClick={handleLearnMore}
-                  className="cursor-pointer font-semibold text-blue-500"
-                >
-                  ...Show less
-                </span>
-              </p>
-            )}
-          </div>
-        </form>
-      </div>
+        <p className="mt-4 text-center">
+          <span className="text-gray-400">
+            {isSignIn ? "New to Netflix?" : "Already Registered?"}
+          </span>
+          <span
+            className="font-bold cursor-pointer ml-2"
+            onClick={toggleSignIn}
+          >
+            {isSignIn ? "Sign up now." : "Sign In"}
+          </span>
+        </p>
+
+        <p className="text-sm text-gray-400 mt-3">
+          This page is protected by Google reCAPTCHA to ensure you're not a bot.
+          {!learnMore && (
+            <span
+              onClick={toggleLearnMore}
+              className="cursor-pointer font-semibold text-blue-500"
+            >
+              Learn more.
+            </span>
+          )}
+        </p>
+
+        {learnMore && (
+          <p className="text-sm text-gray-400 mt-2">
+            The information collected by Google reCAPTCHA is subject to the
+            Google Privacy Policy and Terms of Service.
+            <span
+              onClick={toggleLearnMore}
+              className="cursor-pointer font-semibold text-blue-500 ml-1"
+            >
+              Show less
+            </span>
+          </p>
+        )}
+      </form>
     </>
   );
 };

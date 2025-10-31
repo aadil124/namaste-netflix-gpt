@@ -4,21 +4,21 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 const VideoTitle = ({ movieTitle, movieOverview }) => {
   return (
-    <div className="pt-72 px-10 absolute text-white bg-gradient-to-r from-black">
-      <h1 className="text-4xl font-bold">{movieTitle}</h1>
-      <p className="w-1/4 py-2">{movieOverview}</p>
-      <button className="px-5 py-2 bg-white text-black rounded-md hover:opacity-70">
-        <div className="flex align-middle">
-          <CiPlay1 className="mt-1 me-1" />
-          <span>Play</span>
-        </div>
-      </button>
-      <button className="mx-3 px-5 py-2 bg-gray-500 text-white rounded-md opacity-50 hover:opacity-40">
-        <div className="flex align-middle">
-          <AiOutlineExclamationCircle className="mt-1 me-1" />
-          <span>Help</span>
-        </div>
-      </button>
+    <div className="absolute top-1/3 left-10 z-20 text-white max-w-xl">
+      <h1 className="text-4xl sm:text-5xl font-bold mb-2 drop-shadow-lg">
+        {movieTitle}
+      </h1>
+      <p className="text-sm sm:text-base mb-4 line-clamp-3 opacity-90">
+        {movieOverview}
+      </p>
+      <div className="flex gap-3">
+        <button className="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-md font-semibold hover:opacity-80 transition">
+          <CiPlay1 className="text-lg" /> Play
+        </button>
+        <button className="flex items-center gap-2 bg-gray-500/70 text-white px-5 py-2 rounded-md font-semibold hover:bg-gray-600/70 transition">
+          <AiOutlineExclamationCircle className="text-lg" /> Help
+        </button>
+      </div>
     </div>
   );
 };
