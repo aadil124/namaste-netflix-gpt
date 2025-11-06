@@ -5,22 +5,35 @@ import usePopularMovies from "../hooks/usePopularMovies";
 import useTopRatedMovies from "../hooks/useTopRatedMovies";
 import useUpcomingMovies from "../hooks/useUpcomingMovies";
 import MainContainer from "./MainContainer";
+import GPTSearchPage from "./GPTSearchPage";
+import { useSelector } from "react-redux";
 
 const SecondaryContainer = lazy(() => import("./SecondaryContainer"));
 
 const Browse = () => {
+  const showGPTSearchPage = useSelector(
+    (store) => store.GPTSreachPage.toggelGPTSearch
+  );
   useNowPlayingMovies();
   usePopularMovies();
   useTopRatedMovies();
   useUpcomingMovies();
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className=" min-h-screen text-white">
       <Header />
-      <MainContainer />
-      <Suspense fallback={<p className="text-center p-4">Loading movies...</p>}>
-        <SecondaryContainer />
-      </Suspense>
+      {showGPTSearchPage ? (
+        <GPTSearchPage />
+      ) : (
+        <>
+          <MainContainer />
+          <Suspense
+            fallback={<p className="text-center p-4">Loading movies...</p>}
+          >
+            <SecondaryContainer />
+          </Suspense>
+        </>
+      )}
     </div>
   );
 };

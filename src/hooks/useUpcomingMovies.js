@@ -11,7 +11,6 @@ const useUpcomingMovies = () => {
     const data = await fetch(url, API_OPTIONS);
     const json = await data.json();
     dispatch(addUpcomingMovies(json.results));
-    console.log("data", json.results);
   };
 
   useEffect(() => {

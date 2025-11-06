@@ -6,11 +6,17 @@ import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../Redux/userSlice";
 import { LOGO } from "../utils/constants";
 import { FaSignOutAlt } from "react-icons/fa";
+import { changeGPTSreachView } from "../Redux/GPTSlice";
+import { multipleLanguage } from "../utils/language";
+import { changeLanguage } from "../Redux/languageConfigSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const showGPTSearchPage = useSelector(
+    (store) => store.GPTSreachPage.toggelGPTSearch
+  );
 
   const handleSignOut = async () => {
     try {
@@ -28,7 +34,6 @@ const Header = () => {
         // https://firebase.google.com/docs/reference/js/auth.user
 
         const { uid, email, displayName, photoURL } = user;
-        // console.log(uid, email, displayName);
         dispatch(
           addUser({
             uid: uid,
@@ -46,12 +51,47 @@ const Header = () => {
     return () => unsubscribe();
   }, [dispatch, navigate]);
 
+  const handleToggelGPTView = () => {
+    dispatch(changeGPTSreachView());
+  };
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
   return (
     <div className="fixed top-0 left-0 bg-gradient-to-b from-black z-50 w-screen flex justify-between items-center px-4 py-2">
       <img className="w-44 sm:w-52" src={LOGO} alt="logo" />
       {user && (
         <div className="flex items-center gap-3 text-white">
-          <div className="flex flex-col items-center">
+          {showGPTSearchPage && (
+            <div className="flex justify-center items-center">
+              <select
+                className="m-2 p-2 text-white rounded-lg bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                onChange={handleLanguageChange}
+                style={{
+                  backgroundColor: "#1f2937", // Tailwind gray-800
+                  color: "white",
+                }}
+              >
+                {multipleLanguage.map((lang) => (
+                  <option
+                    key={lang.key}
+                    value={lang.key}
+                    style={{ backgroundColor: "#1f2937", color: "white" }}
+                  >
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <button
+            className="py-2 px-4 m-2 bg-purple-500 hover:bg-purple-700 font-semibold text-white rounded-lg"
+            onClick={handleToggelGPTView}
+          >
+            {showGPTSearchPage ? "Home Page" : "GPT Sreach"}
+          </button>
+          <div className="flex flex-col items-center mt-4">
             <img
               className="w-9 h-9 rounded-full border border-gray-400"
               src={user.photoURL}
